@@ -10,7 +10,6 @@ import {
   SaveTodoAction,
   Todo,
 } from '../redux/actions';
-import { Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_EDIT_SCREEN } from '../navigation/routes';
 import { themeStyles } from '../theme/styles';
@@ -18,6 +17,7 @@ import { DateText } from '../components/DateText';
 import { CheckBox } from '../components/CheckBox';
 import { DeleteButton } from '../components/DeleteButton';
 import { EditButton } from '../components/EditButton';
+import { Button } from '../components/Button';
 
 export const ListScreen = () => {
   const navigation = useNavigation();

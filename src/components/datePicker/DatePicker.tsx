@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Constants, Colors } from 'react-native-markup-kit';
 import { TouchableOpacity, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -19,6 +19,7 @@ export const DatePicker = ({
   setDate,
   height,
 }: DataPickerProps) => {
+  const [mode, setMode] = useState<'time' | 'date'>('date');
   if (!visible) {
     return null;
   }
@@ -47,6 +48,31 @@ export const DatePicker = ({
       </View>
     );
   }
+
+  if (Platform.OS === 'android') {
+    return (
+      <DateTimePicker
+        minuteInterval={5}
+        value={value}
+        is24Hour
+        display="default"
+        mode={mode}
+        onChange={(event, newDate) => {
+          if (mode === 'date') {
+            setMode('time');
+          } else {
+            setVisible(false);
+            setMode('date');
+          }
+          if (newDate) {
+            setDate(newDate);
+          }
+        }}
+      />
+    );
+  }
+
+  return null;
 };
 
 const styles = StyleSheet.create({
@@ -77,11 +103,11 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     paddingVertical: 10,
-    color: Colors.AQUA,
+    color: Colors.black,
   },
   pickerButtonContainer: {
     width: '100%',
-    backgroundColor: Colors.blue30,
+    backgroundColor: Colors.black,
     alignItems: 'center',
   },
   pickerButtonText: {

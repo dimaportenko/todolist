@@ -3,7 +3,6 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Button,
   Alert,
   Platform,
 } from 'react-native';
@@ -22,8 +21,9 @@ import {
   SaveTodoAction,
 } from '../redux/actions';
 import { themeStyles } from '../theme/styles';
-import { DatePicker } from '../components/datePicker/DatePicker.ios';
+import { DatePicker } from '../components/datePicker/DatePicker';
 import { EditScreenRouteProp } from '../navigation/Navigation';
+import { Button } from '../components/Button';
 
 export const EditScreen = () => {
   const navigation = useNavigation();
@@ -79,7 +79,6 @@ export const EditScreen = () => {
 
       <TouchableOpacity
         onPress={() => setPickerVisible(true)}
-        disabled={Platform.OS === 'android'}
         style={themeStyles.inputWrap}>
         <View row centerV flex>
           <Text>Due: </Text>

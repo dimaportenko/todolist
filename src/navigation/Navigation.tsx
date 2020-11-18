@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Button } from 'react-native';
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListScreen } from '../screens/ListScreen';
 import * as routes from './routes';
 import { EditScreen } from '../screens/EditScreen';
 import { Todo } from '../redux/actions';
+import { Button } from '../components/Button';
 
 type RootStackParamList = {
   NAVIGATION_LIST_SCREEN: undefined;

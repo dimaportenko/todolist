@@ -25,3 +25,12 @@ react-native run-ios
 ```
 react-native run-android
 ```
+
+## Known issues
+
+Warning  
+Non-serializable values were found in the navigation
+state. Check:
+
+NAVIGATION_EDIT_SCREEN > params.item.date (Wed
+Nov 18 2020 11:35:46 GMT+0200 (EET))
