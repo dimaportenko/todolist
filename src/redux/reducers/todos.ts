@@ -19,7 +19,6 @@ export const todosReducer = (
       const id: number = state.incrementId;
       const newTodo = { ...action.payload, id };
       const todos = [...state.todos, newTodo];
-      console.log('todos', todos);
       return { todos, incrementId: id + 1 };
     }
     // case ActionTypes.deleteTodo: {
