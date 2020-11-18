@@ -8,21 +8,29 @@ import {
   Platform,
 } from 'react-native';
 import { Constants, View } from 'react-native-markup-kit';
-import { useHeaderHeight } from '@react-navigation/stack'
-import { useNavigation } from '@react-navigation/native';
+import { useHeaderHeight } from '@react-navigation/stack';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   getDateTimeFormattedString,
   getDateFormattedString,
 } from '../utils/date';
 import { useDispatch } from 'react-redux';
-import { newTodo, NewTodoAction } from '../redux/actions';
+import {
+  newTodo,
+  NewTodoAction,
+  saveTodo,
+  SaveTodoAction,
+} from '../redux/actions';
 import { themeStyles } from '../theme/styles';
 import { DatePicker } from '../components/datePicker/DatePicker.ios';
+import { EditScreenRouteProp } from '../navigation/Navigation';
 
 export const EditScreen = () => {
   const navigation = useNavigation();
-  const [itemTitle, setItemTitle] = useState('');
-  const [date, setDate] = useState(new Date());
+  const route = useRoute<EditScreenRouteProp>();
+  const item = route.params?.item;
+  const [itemTitle, setItemTitle] = useState(item?.title ?? '');
+  const [date, setDate] = useState(item?.date ?? new Date());
   const [pickerVisible, setPickerVisible] = useState(false);
   const headerHeight = useHeaderHeight();
   const dispatch = useDispatch();
@@ -32,15 +40,25 @@ export const EditScreen = () => {
       Alert.alert('Validation Error', 'Please enter your todo title');
       return;
     }
-    dispatch<NewTodoAction>(
-      newTodo({
-        title: itemTitle,
-        date,
-        completed: false,
-      }),
-    );
+    if (item) {
+      dispatch<SaveTodoAction>(
+        saveTodo({
+          ...item,
+          title: itemTitle,
+          date,
+        }),
+      );
+    } else {
+      dispatch<NewTodoAction>(
+        newTodo({
+          title: itemTitle,
+          date,
+          completed: false,
+        }),
+      );
+    }
     navigation.goBack();
-  }, [itemTitle, date, dispatch, navigation]);
+  }, [itemTitle, date, dispatch, navigation, item]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -64,23 +82,10 @@ export const EditScreen = () => {
         disabled={Platform.OS === 'android'}
         style={themeStyles.inputWrap}>
         <View row centerV flex>
-          <Text>Due date: </Text>
-          <Text
-          // onPress={() => {
-          //   if (Platform.OS === 'android') setEndTimePicker(true);
-          //   else setIosEndDatePickerVisible(true);
-          //}}
-          >
-            {getDateTimeFormattedString(date)}
-          </Text>
+          <Text>Due: </Text>
+          <Text>{getDateTimeFormattedString(date)}</Text>
           <View padding-2 />
-          <Text
-            onPress={() => {
-              // if (Platform.OS === 'android') setEndDatePicker(true);
-              // else setIosEndDatePickerVisible(true);
-            }}>
-            {getDateFormattedString(date)}
-          </Text>
+          <Text>{getDateFormattedString(date)}</Text>
         </View>
       </TouchableOpacity>
       <DatePicker

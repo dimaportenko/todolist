@@ -21,9 +21,19 @@ export const todosReducer = (
       const todos = [...state.todos, newTodo];
       return { todos, incrementId: id + 1 };
     }
-    // case ActionTypes.deleteTodo: {
-    //   return state.filter((todo) => todo.id !== action.payload);
-    // }
+    case ActionTypes.deleteTodo: {
+      const todos = state.todos.filter((todo) => todo.id !== action.payload);
+      return { ...state, todos };
+    }
+    case ActionTypes.saveTodo: {
+      const todos = state.todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return action.payload;
+        }
+        return todo;
+      });
+      return { ...state, todos };
+    }
     default: {
       return state;
     }
